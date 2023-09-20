@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Behavior Version="5" NoError="true">
+  <Node Class="Behaviac.Design.Nodes.Behavior" AgentType="DerkAgent" Domains="" Enable="true" HasOwnPrefabData="false" Id="-1" PrefabName="" PrefabNodeId="-1">
+    <Comment Background="NoColor" Text=""/>
+    <DescriptorRefs value="0:"/>
+    <Connector Identifier="GenericChildren">
+      <Node Class="PluginBehaviac.Nodes.Selector" Enable="true" HasOwnPrefabData="false" Id="1" PrefabName="" PrefabNodeId="-1">
+        <Comment Background="NoColor" Text="decide strategy"/>
+        <Connector Identifier="GenericChildren">
+          <Node Class="PluginBehaviac.Nodes.IfElse" Enable="true" HasOwnPrefabData="false" Id="4" PrefabName="" PrefabNodeId="-1">
+            <Comment Background="NoColor" Text="fallback"/>
+            <Attachment Class="PluginBehaviac.Events.Precondition" BinaryOperator="And" Enable="true" Id="7" Operator="Less" Opl="Self.DerkAgent::get_self_hp()" Opr1="&quot;&quot;" Opr2="const float 0.5" Phase="Enter" PrefabAttachmentId="-1"/>
+            <Connector Identifier="_condition">
+              <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="5" Operator="Equal" Opl="Self.DerkAgent::do_check_self_in_enemy_range()" Opr="const behaviac::EBTStatus BT_SUCCESS" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="NoColor" Text=""/>
+              </Node>
+            </Connector>
+            <Connector Identifier="_if">
+              <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="6" Method="Self.DerkAgent::do_run_away_from_enemy()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                <Comment Background="NoColor" Text=""/>
+              </Node>
+            </Connector>
+            <Connector Identifier="_else">
+              <Node Class="PluginBehaviac.Nodes.IfElse" Enable="true" HasOwnPrefabData="false" Id="9" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="NoColor" Text=""/>
+                <Attachment Class="PluginBehaviac.Events.Precondition" BinaryOperator="And" Enable="true" Id="46" Operator="Greater" Opl="Self.DerkAgent::get_friend_1_hp()" Opr1="&quot;&quot;" Opr2="const int 0" Phase="Enter" PrefabAttachmentId="-1"/>
+                <Attachment Class="PluginBehaviac.Events.Precondition" BinaryOperator="Or" Enable="true" Id="47" Operator="Greater" Opl="Self.DerkAgent::get_friend_2_hp()" Opr1="&quot;&quot;" Opr2="const int 0" Phase="Enter" PrefabAttachmentId="-1"/>
+                <Attachment Class="PluginBehaviac.Events.Precondition" BinaryOperator="And" Enable="true" Id="8" Operator="Greater" Opl="Self.DerkAgent::get_nearest_friend_distance()" Opr1="&quot;&quot;" Opr2="const float 0.32" Phase="Enter" PrefabAttachmentId="-1"/>
+                <Connector Identifier="_condition">
+                  <Node Class="PluginBehaviac.Nodes.Or" Enable="true" HasOwnPrefabData="false" Id="11" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="check if focusing on allies"/>
+                    <Connector Identifier="Conditions">
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="12" Operator="Equal" Opl="float Self.DerkAgent::focus_on" Opr="const int 2" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text=""/>
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="13" Operator="Equal" Opl="float Self.DerkAgent::focus_on" Opr="const int 3" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text=""/>
+                      </Node>
+                    </Connector>
+                  </Node>
+                </Connector>
+                <Connector Identifier="_if">
+                  <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="10" Method="Self.DerkAgent::do_chase_focus()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                    <Comment Background="NoColor" Text=""/>
+                  </Node>
+                </Connector>
+                <Connector Identifier="_else">
+                  <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="14" Method="Self.DerkAgent::run_focus_on_nearest_friend()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                    <Comment Background="NoColor" Text=""/>
+                  </Node>
+                </Connector>
+              </Node>
+            </Connector>
+          </Node>
+          <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="3" PrefabName="" PrefabNodeId="-1">
+            <Comment Background="NoColor" Text="heal friendly"/>
+            <Connector Identifier="GenericChildren">
+              <Node Class="PluginBehaviac.Nodes.DecoratorNot" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="16" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="NoColor" Text="healing friends only when self is not in danger"/>
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="15" Method="Self.DerkAgent::do_check_self_in_enemy_range()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                    <Comment Background="NoColor" Text=""/>
+                  </Node>
+                </Connector>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.Selector" Enable="true" HasOwnPrefabData="false" Id="17" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="NoColor" Text=""/>
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="20" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="heal friend_1 under certain conditions"/>
+                    <Connector Identifier="GenericChildren">
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="18" Operator="Less" Opl="Self.DerkAgent::get_friend_1_hp()" Opr="const float 0.5" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text=""/>
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="48" Operator="Greater" Opl="Self.DerkAgent::get_friend_1_hp()" Opr="const float 0.1" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text=""/>
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="19" Operator="Less" Opl="Self.DerkAgent::get_friend_1_distance()" Opr="const float 0.32" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text="check if friend 1 is in healing gland range"/>
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="24" Method="Self.DerkAgent::run_focus_on_friend_1()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                        <Comment Background="NoColor" Text=""/>
+                      </Node>
+                    </Connector>
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="21" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="heal friend_1 under certain conditions"/>
+                    <Connector Identifier="GenericChildren">
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="22" Operator="Less" Opl="Self.DerkAgent::get_friend_2_hp()" Opr="const float 0.5" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text=""/>
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="49" Operator="Greater" Opl="Self.DerkAgent::get_friend_2_hp()" Opr="const float 0.1" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text=""/>
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="23" Operator="Less" Opl="Self.DerkAgent::get_friend_2_distance()" Opr="const float 0.32" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text="check if friend 1 is in healing gland range"/>
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="25" Method="Self.DerkAgent::run_focus_on_friend_2()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                        <Comment Background="NoColor" Text=""/>
+                      </Node>
+                    </Connector>
+                  </Node>
+                </Connector>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="37" Method="Self.DerkAgent::do_facing_focus()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                <Comment Background="NoColor" Text=""/>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="2" Method="Self.DerkAgent::do_use_tail_weapon()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                <Comment Background="NoColor" Text=""/>
+              </Node>
+            </Connector>
+          </Node>
+          <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="0" PrefabName="" PrefabNodeId="-1">
+            <Comment Background="NoColor" Text="offensive"/>
+            <Connector Identifier="GenericChildren">
+              <Node Class="PluginBehaviac.Nodes.Selector" Enable="true" HasOwnPrefabData="false" Id="26" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="NoColor" Text="to ensure focus on enemy"/>
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="27" Operator="Equal" Opl="float Self.DerkAgent::focus_on" Opr="const int 4" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text=""/>
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="28" Operator="Equal" Opl="float Self.DerkAgent::focus_on" Opr="const int 5" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text=""/>
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="29" Operator="Equal" Opl="float Self.DerkAgent::focus_on" Opr="const int 6" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text=""/>
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="30" Operator="Equal" Opl="float Self.DerkAgent::focus_on" Opr="const int 7" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text=""/>
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="31" Method="Self.DerkAgent::run_focus_on_nearest_enemy()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                    <Comment Background="NoColor" Text=""/>
+                  </Node>
+                </Connector>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.Selector" Enable="true" HasOwnPrefabData="false" Id="32" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="NoColor" Text="ensure target in range"/>
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="33" Operator="Less" Opl="Self.DerkAgent::get_focus_distance()" Opr="const float 0.3" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text=""/>
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="34" Method="Self.DerkAgent::do_chase_focus()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                    <Comment Background="NoColor" Text=""/>
+                  </Node>
+                </Connector>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.Selector" Enable="true" HasOwnPrefabData="false" Id="38" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="NoColor" Text="keep a minimal distance so that pistol works"/>
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.DecoratorNot" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="41" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text=""/>
+                    <Connector Identifier="GenericChildren">
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="39" Operator="Less" Opl="Self.DerkAgent::get_focus_distance()" Opr="const float 0.15" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text=""/>
+                      </Node>
+                    </Connector>
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="40" Method="Self.DerkAgent::do_move_backwards()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                    <Comment Background="NoColor" Text=""/>
+                  </Node>
+                </Connector>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="35" Method="Self.DerkAgent::do_facing_focus()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                <Comment Background="NoColor" Text=""/>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="36" Method="Self.DerkAgent::do_use_arm_weapon()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                <Comment Background="NoColor" Text="shoot pistol"/>
+              </Node>
+            </Connector>
+          </Node>
+        </Connector>
+      </Node>
+    </Connector>
+  </Node>
+</Behavior>

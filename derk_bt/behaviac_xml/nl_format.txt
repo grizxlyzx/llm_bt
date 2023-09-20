@@ -1,0 +1,124 @@
+[SEL ID=1] # decide strategy
+   [PRECONDITION ID=7] # fallback
+   (get_self_hp<0.5)
+   [END_PRECONDITION]
+   [IFELSE ID=4] # fallback
+   [CHECK]
+      [CONDITION ID=5] 
+      do_check_self_in_enemy_range==BT_SUCCESS
+      [END_CONDITION]
+   [END_CHECK]
+   [IF]
+      [ACTION ID=6] 
+      do_run_away_from_enemy()
+      [END_ACTION]
+   [END_IF]
+   [ELSE]
+      [PRECONDITION ID=46,47,8] 
+      (((get_friend_1_hp>0)||get_friend_2_hp>0)&&get_nearest_friend_distance>0.32)
+      [END_PRECONDITION]
+      [IFELSE ID=9] 
+      [CHECK]
+         [OR ID=11] 
+            [CONDITION ID=12] 
+            focus_on==2
+            [END_CONDITION]
+            [CONDITION ID=13] 
+            focus_on==3
+            [END_CONDITION]
+         [END_OR]
+      [END_CHECK]
+      [IF]
+         [ACTION ID=10] 
+         do_chase_focus()
+         [END_ACTION]
+      [END_IF]
+      [ELSE]
+         [ACTION ID=14] 
+         run_focus_on_nearest_friend()
+         [END_ACTION]
+      [END_ELSE]
+      [END_IFELSE]
+   [END_ELSE]
+   [END_IFELSE]
+   [SEQ ID=3] # heal friendly
+      [NOT ID=16] 
+         [ACTION ID=15] 
+         do_check_self_in_enemy_range()
+         [END_ACTION]
+      [END_NOT]
+      [SEL ID=17] 
+         [SEQ ID=20] # check to heal friend 1
+            [CONDITION ID=18] 
+            get_friend_1_hp<0.5
+            [END_CONDITION]
+            [CONDITION ID=19] 
+            get_friend_1_distance<0.32
+            [END_CONDITION]
+            [ACTION ID=24] 
+            run_focus_on_friend_1()
+            [END_ACTION]
+         [END_SEQ]
+         [SEQ ID=21] 
+            [CONDITION ID=22] 
+            get_friend_2_hp<0.5
+            [END_CONDITION]
+            [CONDITION ID=23] 
+            get_friend_2_distance<0.32
+            [END_CONDITION]
+            [ACTION ID=25] 
+            run_focus_on_friend_2()
+            [END_ACTION]
+         [END_SEQ]
+      [END_SEL]
+      [ACTION ID=37] 
+      do_facing_focus()
+      [END_ACTION]
+      [ACTION ID=2] 
+      do_use_tail_weapon()
+      [END_ACTION]
+   [END_SEQ]
+   [SEQ ID=0] # offensive
+      [SEL ID=26] # ensure focus on enemy
+         [CONDITION ID=27] 
+         focus_on==4
+         [END_CONDITION]
+         [CONDITION ID=28] 
+         focus_on==5
+         [END_CONDITION]
+         [CONDITION ID=29] 
+         focus_on==6
+         [END_CONDITION]
+         [CONDITION ID=30] 
+         focus_on==7
+         [END_CONDITION]
+         [ACTION ID=31] 
+         run_focus_on_nearest_enemy()
+         [END_ACTION]
+      [END_SEL]
+      [SEL ID=32] # ensure close in range
+         [CONDITION ID=33] 
+         get_focus_distance<0.3
+         [END_CONDITION]
+         [ACTION ID=34] 
+         do_chase_focus()
+         [END_ACTION]
+      [END_SEL]
+      [SEL ID=38] # not too close
+         [NOT ID=41] 
+            [CONDITION ID=39] 
+            get_focus_distance<0.15
+            [END_CONDITION]
+         [END_NOT]
+         [ACTION ID=40] 
+         do_move_backwards()
+         [END_ACTION]
+      [END_SEL]
+      [ACTION ID=35] 
+      do_facing_focus()
+      [END_ACTION]
+      [ACTION ID=36] # shot pistol
+      do_use_arm_weapon()
+      [END_ACTION]
+   [END_SEQ]
+[END_SEL]
